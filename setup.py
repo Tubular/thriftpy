@@ -38,6 +38,22 @@ try:
 except ImportError:
     CYTHON = False
 
+# asyncio detection
+try:
+    import asyncio
+    ASYNCIO = True
+except ImportError:
+    ASYNCIO = False
+
+excludes = [
+    'benchmark',
+    'docs',
+    'tests',
+]
+
+if not ASYNCIO:
+    excludes.append('thriftpy.asyncio')
+
 cmdclass = {}
 ext_modules = []
 
@@ -70,7 +86,7 @@ setup(name="thriftpy",
       keywords="thrift python thriftpy",
       author="Lx Yu",
       author_email="i@lxyu.net",
-      packages=find_packages(exclude=['benchmark', 'docs', 'tests']),
+      packages=find_packages(exclude=excludes),
       package_data={"thriftpy": ["contrib/tracking/tracking.thrift"]},
       entry_points={},
       url="https://thriftpy.readthedocs.org/",
